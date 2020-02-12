@@ -94,7 +94,7 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
         $checkid = $urlsegments[4];
         // here's where we should check incoming message queue, or check direct.
         // return: accountkey,destination,messagebody,messagenumber,outgoingmessageid,phonenumber,receiveddate,reference
-        $sql="SELECT * from messageflow where ID > " . $checkid . " and AccountKey='" . $key . "' and direction=in";
+        $sql="SELECT * from incoming where ID > " . $checkid . " and AccountKey='" . $key . "' and direction=in";
     }
 } else { // not in the right place, we out.
 

@@ -24,30 +24,40 @@ $db = 'db/messageflow.db';
 $client = new FlowrouteNumbersAndMessagingLib\FlowrouteNumbersAndMessagingClient($username, $password);
 
 //{"data":{"id":"mdr2-7a9e93cc4dca11ea84593af42b61a46a","links":{"self":"https://api.flowroute.com/v2.1/messages/mdr2-7a9e93cc4dca11ea84593af42b61a46a"},"type":"message"}}
-$test_number='+12312064791';
-SendSMS($client,'+12317201662');
-//GetMessages($client);
+
+//query db for outgoing messages, send them.
+$sql="SELECT * from outgoing where sent=0";
+$sql_ret=$db->query($sql);
+while($row=$sql_ret->fetchArray(SQLITE3_ASSOC)) {
+    $res=SendSMS($client,'+12317201662',$row["MobileNumber"],$row["Message"]);
+    $s="UPDATE outgoing set pid='".$res."',sent=1 where id='".$row["id"]."'";
+    $db->exec($s);
+
+}
+//SendSMS($client,'+12317201662','+12312064791','this is a testy');
+//query provider for incoming messages, write db.
+  //GetMessages($client);
 
 
 
 
-function SendSMS($client, $from_did, $callback_url = NULL)
+function SendSMS($client, $from, $to,$body,$callback_url = NULL)
 {
-    global $test_number;
+    //global $test_number;
 
     $msg = new Models\Message();
-    var_dump($from_did);
-    $msg->from = $from_did;
-    $msg->to = $test_number; // Replace with your mobile number to receive messages from your Flowroute account
-    $msg->body = "This is a Test Message";
+    //var_dump($from_did);
+    $msg->from = $from;
+    $msg->to = $to; // Replace with your mobile number to receive messages from your Flowroute account
+    $msg->body = $body;
     if ($callback_url != NULL) {
         $msg->dlr_callback = $callback_url;
     }
     $messages = $client->getMessages();
     $result = $messages->CreateSendAMessage($msg);
-    var_dump($result);
+    //var_dump($result);
     $return_list[]=$result->data;
-    echo $result->data->id;
+    return $result->data->id;
 }
 
 function GetMessages($client)
