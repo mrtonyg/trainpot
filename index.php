@@ -36,14 +36,17 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
     $op = $urlsegments[1]; // message.svc or incoming.svc
     $key = $urlsegments[2]; // accountkey
     if($op=='flowroute.in' && $requestType == 'POST' ) { //flouwroute inbound message
+        addLogMessage("Flowroute incoming");
         $jsondata = file_get_contents('php://input');
         $messageData = json_decode($jsondata, true);
         $Message=$messageData['data']['attributes']['body'];
         $PhoneNumber=$messageData['data']['attributes']['from'];
         $pid=$messageData['data']['id'];
         $sql='INSERT INTO incoming Message="'.$Message.'", PhoneNumber="'.$PhoneNumber.'", pid="'.$pid.'", ReceivedDate="'.date('YmdHis') .'"';
+        addLogMessage($sql);
     }
     if ($op == 'message.svc' && $requestType == 'POST') { // being asked to send a message
+        addLogMessage("Protractor incoming message outbound");
         $jsondata = file_get_contents('php://input');
         $messageData = json_decode($jsondata, true);
         $mobileNumber = $urlsegments[3];
