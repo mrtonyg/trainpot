@@ -15,7 +15,7 @@ require_once "lib/flowroute-sdk-v3-php/src/Configuration.php";
 
 use FlowrouteNumbersAndMessagingLib\Models;
 
-// Access your Flowroute API credentials as local environment variables
+
 $username = '32627395'; //getenv('FR_ACCESS_KEY', true) ?: getenv('FR_ACCESS_KEY');
 $password = '93fb827e61fc44ba51ac8a1b6cf301d6'; //getenv('FR_SECRET_KEY', true) ?: getenv('FR_SECRET_KEY');
 $logfile = 'log/messageflow.log';
@@ -44,7 +44,7 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
         $Reference = $messageData['Reference'];
 
         //here's where we should write the outgoing message to queue, or send direct,
-        $sql = "INSERT INTO messageflow (AccountKey,MobileNumber,Message,Reference,SentFlag,SeenFlag,Direction,Stamp) VALUES ('" . $key . "','" . $mobileNumber . "','" . $MessageBody . "','" . $Reference . "','0','0','out','" . date('YmDHis') . "')";
+        $sql = "INSERT INTO messageflow (AccountKey,MobileNumber,Message,Reference,SentFlag,SeenFlag,Direction,Stamp) VALUES ('" . $key . "','" . $mobileNumber . "','" . $MessageBody . "','" . $Reference . "','0','0','out','" . date('YmdHis') . "')";
 //	$sql="SELECT name                                   FROM sqlite_master                                   WHERE type = 'table'                                   ORDER BY name";
 
 //	$mdb= new MyDB();
