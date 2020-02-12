@@ -46,7 +46,7 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
             exit;
         }
         //here's where we should write the outgoing message to queue, or send direct,
-        $sql = "INSERT INTO messageflow (AccountKey,MobileNumber,Message,Reference,SentFlag,SeenFlag,Direction,Stamp) VALUES ('" . $key . "','" . $mobileNumber . "','" . $MessageBody . "','" . $Reference . "','0','0','out','" . date('YmdHis') . "')";
+        $sql = "INSERT INTO outgoing (AccountKey,MobileNumber,Message,Reference,SentFlag,SeenFlag,Direction,Stamp) VALUES ('" . $key . "','" . $mobileNumber . "','" . $MessageBody . "','" . $Reference . "','0','0','out','" . date('YmdHis') . "')";
         //	$sql="SELECT name                                   FROM sqlite_master                                   WHERE type = 'table'                                   ORDER BY name";
 
         //	$mdb= new MyDB();
@@ -78,7 +78,7 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
         //here's where we should outgoing message queue, or check direct,
         // return: body/cellnumber/messageid/queuedate/reference/senddate/sent/successstring
         addLogMessage($op . '-' . $subop . '-' . $checkid . "\n");
-        $sql = "SELECT * from messageflow where ID > " . $checkid . " and AccountKey='" . $key . "' and direction='out' and sent=1";
+        $sql = "SELECT * from outgoing where ID > " . $checkid . " and AccountKey='" . $key . "' and direction='out' and sent=1";
         $checkid++;
         //$good_return=json_encode('[{"Body": "Hello Mike","CellNumber": "2317407894","CreditsDeducted": 1,"MessageID": 745026146,"QueueDate": "/Date(1341246335363-0400)/","Reference": "","SendDate": null,"Sent": true,"SuccessString": "Pending"}]');
         $good_return=array(["Body"=> "Hello Mike","CellNumber"=> "2317407894","CreditsDeducted"=>1,"MessageID"=> $checkid, "QueueDate"=> "/Date(1341246335363-0400)/","Reference"=> "","SendDate"=> null,"Sent"=> true,"SuccessString"=> "Success"]);
