@@ -42,7 +42,7 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
         $Message=$messageData['data']['attributes']['body'];
         $PhoneNumber=$messageData['data']['attributes']['from'];
         $pid=$messageData['data']['id'];
-        $sql='INSERT INTO incoming (Message, PhoneNumber, pid, ReceivedDate) VALUES("'.$Message.'","'.$PhoneNumber.'", "'.$pid.'","'.date('YmdHis') .'")';
+        $sql='INSERT INTO incoming (Message, PhoneNumber, pid, ReceivedDate, AccountKey) VALUES("'.$Message.'","'.$PhoneNumber.'", "'.$pid.'","'.date('YmdHis') .'", "1mRdMZkWFhrb8nsSE312K7H6ubSIn70f")';
         $ret = $mdb->exec($sql);
         if (!$ret) {
             addLogMessage($mdb->lastErrorMsg());
@@ -93,6 +93,7 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
         //echo json_encode($good_return) . "\n\n";
     }
     if ($op == 'message.svc' && $requestType == 'GET') { // being asked for outgoing message status
+        addLogMessage("Always give the all clear for outgoing!");
         $subop = $urlsegments[3];
         $checkid = $urlsegments[4];
 
@@ -111,11 +112,20 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
         //return something pleasant to the caller
     }
     if ($op=='incoming.svc' && $requestType=='GET') { // being asked for incoming messages
+        addLogMessage("Check incoming.");
         $subop = $urlsegments[3];
         $checkid = $urlsegments[4];
         // here's where we should check incoming message queue, or check direct.
         // return: accountkey,destination,messagebody,messagenumber,outgoingmessageid,phonenumber,receiveddate,reference
-        $sql="SELECT * from incoming where ID > " . $checkid . " and AccountKey='" . $key . "' and direction=in";
+        $sql="SELECT * from incoming where ID > " . $checkid." and seenFlag=0";
+        $sql_ret=$mdb->query($sql);
+        while($row=$sql_ret->fetchArray(SQLITE3_ASSOC)) {
+            $res=SendSMS($client,'+12317201662',$row["MobileNumber"],$row["Message"],'http://phxis.com/messageflow/flowroute.in');
+            $s="UPDATE incoming set seenFlag=1 where ID='".$row["ID"]."'";
+            $mdb->exec($s);
+            // TODO: assemble incoming message blobs into an array of json blobs for transmission back to protractor
+        }
+
     }
 } else { // not in the right place, we out.
 
