@@ -26,7 +26,7 @@ $client = new FlowrouteNumbersAndMessagingLib\FlowrouteNumbersAndMessagingClient
 //{"data":{"id":"mdr2-7a9e93cc4dca11ea84593af42b61a46a","links":{"self":"https://api.flowroute.com/v2.1/messages/mdr2-7a9e93cc4dca11ea84593af42b61a46a"},"type":"message"}}
 
 //query db for outgoing messages, send them.
-$sql="SELECT * from outgoing where sent=0";
+$sql="SELECT * from outgoing where sentFlag=0";
 $sql_ret=$mdb->query($sql);
 while($row=$sql_ret->fetchArray(SQLITE3_ASSOC)) {
     $res=SendSMS($client,'+12317201662',$row["MobileNumber"],$row["Message"]);
