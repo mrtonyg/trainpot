@@ -5,7 +5,7 @@ class MyDB extends SQLite3
 {
     function __construct()
     {
-        $this->open('/home/phxis/public_html/messageflow/db/messageflow.db');
+        $this->open('db/messageflow.db');
     }
 }
 
@@ -25,7 +25,7 @@ $client = new FlowrouteNumbersAndMessagingLib\FlowrouteNumbersAndMessagingClient
 
 //{"data":{"id":"mdr2-7a9e93cc4dca11ea84593af42b61a46a","links":{"self":"https://api.flowroute.com/v2.1/messages/mdr2-7a9e93cc4dca11ea84593af42b61a46a"},"type":"message"}}
 $test_number='+12312064791';
-SendSMS($client,'+1231727400');
+SendSMS($client,'+12317201662');
 GetMessages($client);
 
 
