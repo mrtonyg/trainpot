@@ -49,6 +49,7 @@ function GetMessages($client)
         foreach ($message_data->data as $item)
         {
             echo "---------------------------\nSMS MDR:\n";
+            var_dump($item);
             echo "Attributes:" . $item->attributes . "\nId:" . $item->id . "\nLinks:" . $item.links . "\nType:" . $item->type . "\n";
             $return_list[] = $item->id;
         }
