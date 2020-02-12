@@ -43,7 +43,17 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
         $PhoneNumber=$messageData['data']['attributes']['from'];
         $pid=$messageData['data']['id'];
         $sql='INSERT INTO incoming Message="'.$Message.'", PhoneNumber="'.$PhoneNumber.'", pid="'.$pid.'", ReceivedDate="'.date('YmdHis') .'"';
-        addLogMessage($sql);
+        $ret = $mdb->exec($sql);
+        if (!$ret) {
+            addLogMessage($mdb->lastErrorMsg());
+            //$failure_return=array("SendMessageWithReferenceExtendedResult" => ["ErrorMessage" => $mdb->lastErrorMsg(), "MessageID" => "", "MessagesRemaining" => 9999, "QueuedSuccessfully" => false]);
+            //echo json_encode($failure_return) . "\n\n";
+        } else {
+            addLogMessage("Record created successfully");
+            //$lid=$mdb->lastInsertRowID();
+            //$success_return=array("SendMessageWithReferenceExtendedResult" => ["ErrorMessage" => "", "MessageID" => $lid, "MessagesRemaining" => 9999, "QueuedSuccessfully" => true]);
+           // echo json_encode($success_return) . "\n\n";
+        }
     }
     if ($op == 'message.svc' && $requestType == 'POST') { // being asked to send a message
         addLogMessage("Protractor incoming message outbound");
