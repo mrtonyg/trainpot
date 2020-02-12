@@ -50,7 +50,7 @@ function GetMessages($client)
         {
             echo "---------------------------\nSMS MDR:\n";
             var_dump($item);
-            //echo "Attributes:" . $item->attributes . "\n";
+            echo "Attributes:" . $item->attributes . "\n";
             echo "Id:" . $item->id . "\nLinks:" . $item.links . "\nType:" . $item->type . "\n";
             $return_list[] = $item->id;
         }
