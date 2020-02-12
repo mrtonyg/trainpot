@@ -103,7 +103,7 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
         $checkid++;
         //$good_return=json_encode('[{"Body": "Hello Mike","CellNumber": "2317407894","CreditsDeducted": 1,"MessageID": 745026146,"QueueDate": "/Date(1341246335363-0400)/","Reference": "","SendDate": null,"Sent": true,"SuccessString": "Pending"}]');
         $good_return=array(["Body"=> "Hello Mike","CellNumber"=> "2317407894","CreditsDeducted"=>1,"MessageID"=> $checkid, "QueueDate"=> "/Date(1341246335363-0400)/","Reference"=> "","SendDate"=> null,"Sent"=> true,"SuccessString"=> "Success"]);
-        $good_return=array([""]);
+        //$good_return=array([""]);
         $yo=json_encode($good_return);
         echo $yo."\n\n";
 
