@@ -46,6 +46,8 @@ function SendSMS($client, $from_did, $callback_url = NULL)
     $messages = $client->getMessages();
     $result = $messages->CreateSendAMessage($msg);
     var_dump($result);
+    $return_list[]=$result->data;
+    echo $return_list['id'];
 }
 
 function GetMessages($client)
