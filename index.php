@@ -42,7 +42,9 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
         $subop = $urlsegments[4];
         $MessageBody = $messageData['MessageBody'];
         $Reference = $messageData['Reference'];
-
+        if($mobileNumber=='unsent') { //wtf is unsent you idiot?
+            exit;
+        }
         //here's where we should write the outgoing message to queue, or send direct,
         $sql = "INSERT INTO messageflow (AccountKey,MobileNumber,Message,Reference,SentFlag,SeenFlag,Direction,Stamp) VALUES ('" . $key . "','" . $mobileNumber . "','" . $MessageBody . "','" . $Reference . "','0','0','out','" . date('YmdHis') . "')";
         //	$sql="SELECT name                                   FROM sqlite_master                                   WHERE type = 'table'                                   ORDER BY name";
