@@ -36,7 +36,7 @@ while($row=$sql_ret->fetchArray(SQLITE3_ASSOC)) {
 }
 //SendSMS($client,'+12317201662','+12312064791','this is a testy');
 //query provider for incoming messages, write db.
-  //GetMessages($client);
+  GetMessages($client);
 
 
 
