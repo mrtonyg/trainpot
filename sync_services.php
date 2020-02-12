@@ -40,9 +40,14 @@ function GetMessages($client)
     $startDate = new DateTime('2018-01-01', new DateTimeZone('Pacific/Nauru'));
     $endDate = NULL;
 
-    do
+   do
     {
         $messages = $client->getMessages();
+        echo "calling lookup on ";
+        var_dump($startDate);
+        var_dump($endDate);
+        var_dump($limit);
+        var_dump($offset);
         $message_data = $messages->getLookUpASetOfMessages($startDate, $endDate, $limit, $offset);
 
         // Iterate through each number item
@@ -50,8 +55,6 @@ function GetMessages($client)
         {
             echo "---------------------------\nSMS MDR:\n";
             var_dump($item);
-            echo "Attributes:" . $item->attributes . "\n";
-            echo "Id:" . $item->id . "\nLinks:" . $item.links . "\nType:" . $item->type . "\n";
             $return_list[] = $item->id;
         }
 
