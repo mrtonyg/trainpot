@@ -45,38 +45,47 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
 
         //here's where we should write the outgoing message to queue, or send direct,
         $sql = "INSERT INTO messageflow (AccountKey,MobileNumber,Message,Reference,SentFlag,SeenFlag,Direction,Stamp) VALUES ('" . $key . "','" . $mobileNumber . "','" . $MessageBody . "','" . $Reference . "','0','0','out','" . date('YmdHis') . "')";
-//	$sql="SELECT name                                   FROM sqlite_master                                   WHERE type = 'table'                                   ORDER BY name";
+        //	$sql="SELECT name                                   FROM sqlite_master                                   WHERE type = 'table'                                   ORDER BY name";
 
-//	$mdb= new MyDB();
+        //	$mdb= new MyDB();
         $ret = $mdb->exec($sql);
-
         if (!$ret) {
             addLogMessage($mdb->lastErrorMsg());
+            $failure_return=array("SendMessageWithReferenceExtendedResult" => ["ErrorMessage" => $mdb->lastErrorMsg(), "MessageID" => "", "MessagesRemaining" => 9999, "QueuedSuccessfully" => false]);
+            echo json_encode($failure_return) . "\n\n";
         } else {
-            addLogMessage("Records created successfully");
+            addLogMessage("Record created successfully");
+            $lid=$mdb->lastInsertRowID();
+            $success_return=array("SendMessageWithReferenceExtendedResult" => ["ErrorMessage" => "", "MessageID" => $lid, "MessagesRemaining" => 9999, "QueuedSuccessfully" => true]);
+            echo json_encode($success_return) . "\n\n";
         }
-//	while($row=$ret->fetchArray(SQLITE3_ASSOC) ) {
-//		echo $row['name']."\n";
-//	}
-//	$mdb->close();
 
-
+        //	while($row=$ret->fetchArray(SQLITE3_ASSOC) ) {
+        //		echo $row['name']."\n";
+        //	}
+        //	$mdb->close();
         addLogMessage($op . '-' . $subop . '-' . $mobileNumber . '-' . $Reference . "\n");
-
-
         //return something pleasant to the caller
-        $good_return = array("SendMessageWithReferenceExtendedResult" => ["ErrorMessage" => "", "MessageID" => 745026146, "MessagesRemaining" => 1491, "QueuedSuccessfully" => true]);
-        echo json_encode($good_return) . "\n\n";
+        // $good_return = array("SendMessageWithReferenceExtendedResult" => ["ErrorMessage" => "", "MessageID" => 745026146, "MessagesRemaining" => 1491, "QueuedSuccessfully" => true]);
+        //echo json_encode($good_return) . "\n\n";
     }
-    if ($op == 'message.svc' && $requestType == 'GET') { // being asked for waiting incoming messages
+    if ($op == 'message.svc' && $requestType == 'GET') { // being asked for outgoing message status
         $subop = $urlsegments[3];
         $checkid = $urlsegments[4];
 
-        //here's where we should incoming message queue, or check direct,
+        //here's where we should outgoing message queue, or check direct,
+        // return: body/cellnumber/messageid/queuedate/reference/senddate/sent/successstring
         addLogMessage($op . '-' . $subop . '-' . $checkid . "\n");
-        $sql = "SELECT * from messageflow where ID > " . $checkid . " and AccountKey='" . $key . "' and direction='in'";
+        $sql = "SELECT * from messageflow where ID > " . $checkid . " and AccountKey='" . $key . "' and direction='out' and sent=1";
 
         //return something pleasant to the caller
+    }
+    if ($op=='incoming.svc' && $requestType=='GET') { // being asked for incoming messages
+        $subop = $urlsegments[3];
+        $checkid = $urlsegments[4];
+        // here's where we should check incoming message queue, or check direct.
+        // return: accountkey,destination,messagebody,messagenumber,outgoingmessageid,phonenumber,receiveddate,reference
+        $sql="SELECT * from messageflow where ID > " . $checkid . " and AccountKey='" . $key . "' and direction=in";
     }
 } else { // not in the right place, we out.
 
