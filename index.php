@@ -1,19 +1,19 @@
 <?php
-$db='/home/phxis/public_html/messageflow/db/messageflow.db';
+$db='db/messageflow.db';
    class MyDB extends SQLite3 {
       function __construct() {
          $this->open('/home/phxis/public_html/messageflow/db/messageflow.db');
       }
    }
 $mdb= new MyDB();
-require_once "/home/phxis/flowroute-sdk-v3-php/vendor/autoload.php";
-require_once "/home/phxis/flowroute-sdk-v3-php/src/Configuration.php";
+require_once "lib/flowroute-sdk-v3-php/vendor/autoload.php";
+require_once "lib/flowroute-sdk-v3-php/src/Configuration.php";
 use FlowrouteNumbersAndMessagingLib\Models;
 // Access your Flowroute API credentials as local environment variables
 $username = '32627395'; //getenv('FR_ACCESS_KEY', true) ?: getenv('FR_ACCESS_KEY');
 $password = '93fb827e61fc44ba51ac8a1b6cf301d6'; //getenv('FR_SECRET_KEY', true) ?: getenv('FR_SECRET_KEY');
-$logfile='/home/phxis/public_html/messageflow/log/messageflow.log';
-$db='/home/phxis/public_html/messageflow/db/messageflow.db';
+$logfile='log/messageflow.log';
+$db='db/messageflow.db';
 // Instantiate API client and authenticate
 $client = new FlowrouteNumbersAndMessagingLib\FlowrouteNumbersAndMessagingClient($username, $password);
 
