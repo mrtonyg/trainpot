@@ -23,12 +23,30 @@ $db = 'db/messageflow.db';
 // Instantiate API client and authenticate
 $client = new FlowrouteNumbersAndMessagingLib\FlowrouteNumbersAndMessagingClient($username, $password);
 
-
+//{"data":{"id":"mdr2-7a9e93cc4dca11ea84593af42b61a46a","links":{"self":"https://api.flowroute.com/v2.1/messages/mdr2-7a9e93cc4dca11ea84593af42b61a46a"},"type":"message"}}
+$test_number='+12312064791';
+SendSMS($client,'+1231727400');
 GetMessages($client);
 
 
 
 
+function SendSMS($client, $from_did, $callback_url = NULL)
+{
+    global $test_number;
+
+    $msg = new Models\Message();
+    var_dump($from_did);
+    $msg->from = $from_did;
+    $msg->to = $test_number; // Replace with your mobile number to receive messages from your Flowroute account
+    $msg->body = "This is a Test Message";
+    if ($callback_url != NULL) {
+        $msg->dlr_callback = $callback_url;
+    }
+    $messages = $client->getMessages();
+    $result = $messages->CreateSendAMessage($msg);
+    var_dump($result);
+}
 
 function GetMessages($client)
 {
