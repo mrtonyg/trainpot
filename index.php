@@ -42,7 +42,7 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
         $Message=$messageData['data']['attributes']['body'];
         $PhoneNumber=$messageData['data']['attributes']['from'];
         $pid=$messageData['data']['id'];
-        $sql='INSERT INTO incoming Message="'.$Message.'", PhoneNumber="'.$PhoneNumber.'", pid="'.$pid.'", ReceivedDate="'.date('YmdHis') .'"';
+        $sql='INSERT INTO incoming (Message, PhoneNumber, pid, ReceivedDate) VALUES("'.$Message.'","'.$PhoneNumber.'", "'.$pid.'","'.date('YmdHis') .'")';
         $ret = $mdb->exec($sql);
         if (!$ret) {
             addLogMessage($mdb->lastErrorMsg());
