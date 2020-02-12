@@ -27,11 +27,11 @@ $client = new FlowrouteNumbersAndMessagingLib\FlowrouteNumbersAndMessagingClient
 
 //query db for outgoing messages, send them.
 $sql="SELECT * from outgoing where sent=0";
-$sql_ret=$db->query($sql);
+$sql_ret=$mdb->query($sql);
 while($row=$sql_ret->fetchArray(SQLITE3_ASSOC)) {
     $res=SendSMS($client,'+12317201662',$row["MobileNumber"],$row["Message"]);
     $s="UPDATE outgoing set pid='".$res."',sent=1 where id='".$row["id"]."'";
-    $db->exec($s);
+    $mdb->exec($s);
 
 }
 //SendSMS($client,'+12317201662','+12312064791','this is a testy');
