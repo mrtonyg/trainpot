@@ -37,7 +37,7 @@ function GetMessages($client)
     $offset = 0;
 
     // Find all messages since January 1, 2017
-    $startDate = new DateTime('2018-01-01', new DateTimeZone('Pacific/Nauru'));
+    $startDate = new DateTime('2020-02-01', new DateTimeZone('Pacific/Nauru'));
     $endDate = NULL;
 
    do
