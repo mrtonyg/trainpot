@@ -26,7 +26,7 @@ $client = new FlowrouteNumbersAndMessagingLib\FlowrouteNumbersAndMessagingClient
 //{"data":{"id":"mdr2-7a9e93cc4dca11ea84593af42b61a46a","links":{"self":"https://api.flowroute.com/v2.1/messages/mdr2-7a9e93cc4dca11ea84593af42b61a46a"},"type":"message"}}
 $test_number='+12312064791';
 SendSMS($client,'+12317201662');
-GetMessages($client);
+//GetMessages($client);
 
 
 
@@ -47,7 +47,7 @@ function SendSMS($client, $from_did, $callback_url = NULL)
     $result = $messages->CreateSendAMessage($msg);
     var_dump($result);
     $return_list[]=$result->data;
-    echo $return_list['id'];
+    echo $result['id'];
 }
 
 function GetMessages($client)
