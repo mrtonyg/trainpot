@@ -38,9 +38,9 @@ if ($urlsegments[0] == 'messageflow') { // we're in the right place, carry on
     if($op=='flowroute.in' && $requestType == 'POST' ) { //flouwroute inbound message
         $jsondata = file_get_contents('php://input');
         $messageData = json_decode($jsondata, true);
-        $Message=$messageData->data->attributes->body;
-        $PhoneNumber=$messageData->data->attributes->from;
-        $pid=$messageData->data->id;
+        $Message=$messageData['data']['attributes']['body'];
+        $PhoneNumber=$messageData['data']['attributes']['from'];
+        $pid=$messageData['data']['id'];
         $sql='INSERT INTO incoming Message="'.$Message.'", PhoneNumber="'.$PhoneNumber.'", pid="'.$pid.'", ReceivedDate="'.date('YmdHis') .'"';
     }
     if ($op == 'message.svc' && $requestType == 'POST') { // being asked to send a message
