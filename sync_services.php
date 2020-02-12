@@ -30,7 +30,7 @@ $sql="SELECT * from outgoing where sentFlag=0";
 $sql_ret=$mdb->query($sql);
 while($row=$sql_ret->fetchArray(SQLITE3_ASSOC)) {
     $res=SendSMS($client,'+12317201662',$row["MobileNumber"],$row["Message"]);
-    $s="UPDATE outgoing set pid='".$res."',sent=1 where id='".$row["id"]."'";
+    $s="UPDATE outgoing set pid='".$res."',sent=1 where ID='".$row["ID"]."'";
     $mdb->exec($s);
 
 }
